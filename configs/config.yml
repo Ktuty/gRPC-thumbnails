@@ -1,0 +1,6 @@
+port: '8080'
+host: 'localhost'
+db:
+  host: 'localhost'
+  port: '6379'
+  db: '0'

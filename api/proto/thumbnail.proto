@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option go_package = "github.com/Ktuty/gRPC_thumbnails/pkg/api";
+
+package api;
+
+service Thumbnail {
+  rpc GetThumbnail(GetThumbnailRequest) returns (stream GetThumbnailResponse);
+}
+
+message GetThumbnailRequest {
+  repeated string videoID = 1;
+  bool async = 2;
+}
+
+message GetThumbnailResponse {
+  bytes thumb = 1;
+}
