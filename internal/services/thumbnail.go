@@ -3,8 +3,12 @@ package services
 import (
 	"fmt"
 	"io"
+	"log"
 	"net/http"
+	"os"
 	"tumbnail/internal/repository"
+
+	"github.com/joho/godotenv"
 )
 
 type ThumbnailService struct {
@@ -20,8 +24,16 @@ func (s *ThumbnailService) GetThumbnail(videoID string) ([]byte, error) {
 }
 
 func (s *ThumbnailService) FetchThumbnailFromMicroservice(videoID string) ([]byte, error) {
-	//thumbnailURL := fmt.Sprintf("https://img.youtube.com/vi/%s/maxresdefault.jpg", videoID)
-	thumbnailURL := fmt.Sprintf("https://img.youtube.com/vi/%s/default.jpg", videoID)
+
+	if err := godotenv.Load(); err != nil {
+		log.Fatalf("error loading env variables: %s", err.Error())
+	}
+
+	if os.Getenv("IMAGE") == "" {
+		log.Fatal("IMAGE URL is not set in environment variables")
+	}
+
+	thumbnailURL := fmt.Sprintf(os.Getenv("IMAGE"), videoID)
 	resp, err := http.Get(thumbnailURL)
 	if err != nil {
 		return nil, err
